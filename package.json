@@ -1,0 +1,15 @@
+{
+  "name": "nepalidate.org",
+  "version": "1.0.0",
+  "description": "nepalidate.org",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/yarsa/nepalidate.org"
+  },
+  "author": "Yarsa Labs",
+  "license": "MIT"
+}

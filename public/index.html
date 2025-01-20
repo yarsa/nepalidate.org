@@ -12,20 +12,22 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        background-color: #f3f4f6;
+        background-color: #f3f9fc;
         font-family: "Noto Sans Devanagari", sans-serif;
       }
 
       .container {
         background-color: white;
-        padding: 2rem;
         border-radius: 1rem;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         text-align: center;
         width: 80%;
         max-width: 720px;
         padding-top: 4rem;
-        padding-bottom: 2rem;
+        border: 1px solid #e5e7eb;
+      }
+      .wrapper {
+        padding: 1rem;
       }
       .day {
         font-size: 3rem;
@@ -35,7 +37,7 @@
         text-align: center;
       }
       .date {
-        font-size: 6rem;
+        font-size: 5rem;
         font-weight: bold;
         color: #1f2937;
         margin-bottom: 1rem;
@@ -50,33 +52,64 @@
       .copyMessage {
         color: #4b5563;
         font-size: 0.8rem;
-        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
       .copy {
+        margin-top: 1rem;
         cursor: pointer;
-        background-color: #f3f4f6;
+        background-color: #f9f9f9;
         border: 1px solid #d1d5db;
-        border-radius: 0.25rem;
+        color: #4b5563;
+        border-radius: 0.5rem;
         padding: 0.5rem 1rem;
+        font-size: 1.2rem;
         text-align: center;
-        margin-bottom: 1rem;
         font-weight: bold;
       }
       .footer {
+        margin-top: 2rem;
+        padding: 1rem;
+        background-color: #f3f4f6;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         font-size: 1rem;
         color: #4b5563;
-        margin-top: 1rem;
+        gap: 1rem;
+      }
+      .footer a {
+        text-decoration: none;
+        color: #4b5563;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="day" id="nepaliDay"></div>
-      <div class="footer" id="englishDate"></div>
-      <div class="date" id="nepaliDate"></div>
-      <div class="time" id="nepaliTime"></div>
-      <div class="copyMessage" id="rawDateTimeMessage">Click to copy</div>
-      <input title="Click to copy" class="copy" id="rawDateTime" readonly />
+      <div class="wrapper">
+        <div class="day" id="nepaliDay"></div>
+        <div class="date" id="nepaliDate"></div>
+        <div class="time" id="nepaliTime"></div>
+      </div>
+
+      <div class="footer">
+        <span id="englishDate"></span>
+        &middot;
+        <span id="footertext">
+          <a href="https://github.com/yarsa/nepalidate.org">Source Code</a>
+        </span>
+      </div>
+      <div>
+        <input
+          title="Click to copy"
+          class="copy"
+          id="rawDateTime"
+          readonly
+          size="10"
+        />
+        <div class="copyMessage" id="rawDateTimeMessage">Click to copy</div>
+      </div>
     </div>
 
     <script>
@@ -416,7 +449,7 @@
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-        hour12: true,
+        hour12: false,
       };
 
       const padNumberWithZeroToMakeTwoDigits = (number) => {

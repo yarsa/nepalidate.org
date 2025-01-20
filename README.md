@@ -19,6 +19,6 @@ Bikram Sambat is the traditional Nepali calendar. It is based on the Saka era, a
 
 The website uses the server time to show the date. The server time is fetched from the server and is used to show the date. The date conversion done on the client side with JavaScript.
 
-# How it looks
+# How it looks like
 
-![Screenshot](screenshot.png)
+![Screenshot](public/screenshot.png)

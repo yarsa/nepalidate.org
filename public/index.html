@@ -438,82 +438,77 @@
       let startTime;
 
       const updateDateTime = () => {
-        const now = serverTime
-          ? new Date(serverTime.getTime() + (performance.now() - startTime))
-          : new Date();
-        const timeString = now.toLocaleTimeString("ne-NP", timeOptions);
-        const weekDay = now.getDay();
+        const now = new Date();
 
-        const { bsYear, bsMonth, bsDate, dateFormat } = convertADtoBS(
-          now.getFullYear(),
-          now.getMonth() + 1,
-          now.getDate()
+        // Get Nepal's date/time components
+        const nepalFormatter = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Kathmandu",
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          weekday: "long",
+          hour12: false,
+        });
+
+        const parts = nepalFormatter.formatToParts(now);
+        const getPart = (type) => parts.find((p) => p.type === type)?.value;
+
+        // Extract Nepal time components
+        const nepalYear = parseInt(getPart("year"));
+        const nepalMonth = parseInt(getPart("month"));
+        const nepalDay = parseInt(getPart("day"));
+        const nepalWeekday = getPart("weekday");
+        const nepalHour = getPart("hour").padStart(2, "0");
+        const nepalMinute = getPart("minute").padStart(2, "0");
+        const nepalSecond = getPart("second").padStart(2, "0");
+
+        // Convert to BS date
+        const { bsYear, bsMonth, bsDate } = convertADtoBS(
+          nepalYear,
+          nepalMonth,
+          nepalDay
         );
 
-        document.getElementById(
-          "nepaliDay"
-        ).textContent = `${nepaliWeekdays[weekDay]}`;
+        // Get correct Nepali weekday index
+        const weekdayMap = {
+          Sunday: 0,
+          Monday: 1,
+          Tuesday: 2,
+          Wednesday: 3,
+          Thursday: 4,
+          Friday: 5,
+          Saturday: 6,
+        };
+        const weekDayIndex = weekdayMap[nepalWeekday];
 
+        // Update display elements
+        document.getElementById("nepaliDay").textContent =
+          nepaliWeekdays[weekDayIndex];
         document.getElementById("nepaliDate").textContent = `${toNepaliDigits(
           bsDate
         )} ${bsMonths[bsMonth - 1]} ${toNepaliDigits(bsYear)}`;
+        document.getElementById("nepaliTime").textContent = `${toNepaliDigits(
+          nepalHour
+        )}:${toNepaliDigits(nepalMinute)}:${toNepaliDigits(nepalSecond)}`;
 
-        document.getElementById("nepaliTime").textContent =
-          toNepaliDigits(timeString);
+        // Update English date
+        document.getElementById("englishDate").textContent =
+          `${nepalYear}-${nepalMonth.toString().padStart(2, "0")}-${nepalDay
+            .toString()
+            .padStart(2, "0")} ` + `${nepalHour}:${nepalMinute}:${nepalSecond}`;
 
-        const dateInput = document.getElementById("rawDateTime");
-        const dateInputMessage = document.getElementById("rawDateTimeMessage");
-
-        dateInput.value = `${bsYear}-${padNumberWithZeroToMakeTwoDigits(
-          bsMonth
-        )}-${padNumberWithZeroToMakeTwoDigits(bsDate)}`;
-        dateInput.title = "Click to copy";
-        dateInput.style.fontWeight = "normal";
-
-        dateInput.addEventListener("click", () => {
-          navigator.clipboard.writeText(dateInput.value);
-          dateInput.style.fontWeight = "bold";
-          dateInputMessage.textContent = "Copied to clipboard";
-        });
-
-        document.getElementById("englishDate").textContent = formatDateTime(now);
+        // Update copy field
+        document.getElementById("rawDateTime").value = `${bsYear}-${bsMonth
+          .toString()
+          .padStart(2, "0")}-${bsDate.toString().padStart(2, "0")}`;
       };
 
-      const fetchServerTime = async () => {
-        try {
-          const response = await fetch(
-            `https://yarsa.io/apis/utils/nepal-time.php`,
-            {
-              cf: {
-                timeoutMs: 2000,
-              },
-            }
-          );
-
-          if (response.ok) {
-            serverTime = new Date(await response.text());
-            startTime = performance.now(); // Record the start time for precise updates
-          }
-        } catch (error) {
-          console.error(`Failed to fetch time from server:`, error);
-          // Retry fetching the server time after a short delay
-          setTimeout(fetchServerTime, 1000);
-        }
-      };
-
-      const formatDateTime = (date) => {
-        const year = date.getFullYear();
-        const month = padNumberWithZeroToMakeTwoDigits(date.getMonth() + 1); // Months are 0-indexed
-        const day = padNumberWithZeroToMakeTwoDigits(date.getDate());
-        const hours = padNumberWithZeroToMakeTwoDigits(date.getHours());
-        const minutes = padNumberWithZeroToMakeTwoDigits(date.getMinutes());
-        const seconds = padNumberWithZeroToMakeTwoDigits(date.getSeconds());
-
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-      };
-
-      document.addEventListener("DOMContentLoaded", async () => {
-        await fetchServerTime();
+      // Remove server time fetching logic
+      document.addEventListener("DOMContentLoaded", () => {
+        updateDateTime();
         setInterval(updateDateTime, 1000);
       });
     </script>

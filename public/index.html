@@ -505,6 +505,10 @@
           navigator.clipboard.writeText(dateInput.value);
           dateInput.style.fontWeight = "bold";
           dateInputMessage.textContent = "Copied to clipboard";
+          setTimeout(() => {
+            dateInput.style.fontWeight = "normal";
+            dateInputMessage.textContent = "Click to copy";
+          }, 1000);
         });
 
         // Update English date

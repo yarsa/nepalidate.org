@@ -427,8 +427,46 @@
         return number.toString().padStart(2, "0");
       };
 
+      let serverTime;
+
+      const fetchServerTime = async () => {
+        try {
+          const response = await fetch(
+            `https://yarsa.io/apis/utils/nepal-time.php`,
+            {
+              cf: {
+                timeoutMs: 2000,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const serverDateString = await response.text();
+            serverTime = parseAPIDateString(serverDateString);
+          }
+        } catch (error) {
+          console.error(`Failed to fetch time from server:`, error);
+          // Fallback to client time if API fails
+          serverTime = new Date();
+        }
+      };
+
+      const parseAPIDateString = (dateString) => {
+        // Split the date string into components
+        const [datePart, timePart] = dateString.split(" ");
+        const [year, month, day] = datePart.split("-").map(Number);
+        const [hour, minute, second] = timePart.split(":").map(Number);
+
+        // Nepali Offset
+        const nepaliOffset = 5 * 60 * 60 * 1000 + 45 * 60 * 1000; // 5h45m in milliseconds
+        const utcTime = Date.UTC(year, month - 1, day, hour, minute, second) - nepaliOffset;
+        return new Date(utcTime);
+      };
+
       const updateDateTime = () => {
-        const now = new Date();
+        const now = serverTime
+          ? new Date(serverTime.getTime() + (Date.now() - startTime))
+          : new Date();
 
         // Get Nepal's date/time components
         const nepalFormatter = new Intl.DateTimeFormat("en-US", {
@@ -515,8 +553,10 @@
           .padStart(2, "0")}-${bsDate.toString().padStart(2, "0")}`;
       };
 
-      // Remove server time fetching logic
-      document.addEventListener("DOMContentLoaded", () => {
+      let startTime;
+      document.addEventListener("DOMContentLoaded", async () => {
+        await fetchServerTime();
+        startTime = Date.now();
         updateDateTime();
         setInterval(updateDateTime, 1000);
       });

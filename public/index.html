@@ -53,6 +53,7 @@
         color: #4b5563;
         font-size: 0.8rem;
         margin-bottom: 1rem;
+        margin-top: 0.2rem;
       }
       .copy {
         margin-top: 1rem;
@@ -143,7 +144,7 @@
         "Monday",
         "Tuesday",
         "Wednesday",
-        "Thusday",
+        "Thursday",
         "Friday",
         "Saturday",
       ];
@@ -434,9 +435,6 @@
         return number.toString().padStart(2, "0");
       };
 
-      let serverTime;
-      let startTime;
-
       const updateDateTime = () => {
         const now = new Date();
 
@@ -493,6 +491,21 @@
         document.getElementById("nepaliTime").textContent = `${toNepaliDigits(
           nepalHour
         )}:${toNepaliDigits(nepalMinute)}:${toNepaliDigits(nepalSecond)}`;
+
+        const dateInput = document.getElementById("rawDateTime");
+        const dateInputMessage = document.getElementById("rawDateTimeMessage");
+
+        dateInput.value = `${bsYear}-${padNumberWithZeroToMakeTwoDigits(
+          bsMonth
+        )}-${padNumberWithZeroToMakeTwoDigits(bsDate)}`;
+        dateInput.title = "Click to copy";
+        dateInput.style.fontWeight = "normal";
+
+        dateInput.addEventListener("click", () => {
+          navigator.clipboard.writeText(dateInput.value);
+          dateInput.style.fontWeight = "bold";
+          dateInputMessage.textContent = "Copied to clipboard";
+        });
 
         // Update English date
         document.getElementById("englishDate").textContent =

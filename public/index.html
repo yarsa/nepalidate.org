@@ -555,6 +555,7 @@
 
       let startTime;
       document.addEventListener("DOMContentLoaded", async () => {
+        updateDateTime();
         await fetchServerTime();
         startTime = Date.now();
         updateDateTime();

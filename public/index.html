@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Today's Nepali Date and Time | आजको नेपाली मिति र समय</title>
     <style>
+      :root {
+        --bgPrimary: #f3f9fc;
+        --bgSecondary: white;
+        --bgTertiary: #f3f4f6;
+        --bgExtra: #f9f9f9;
+        --fontPrimary: #374151;
+        --fontSecondary: #4b5563;
+        --fontTertiary: #1f2937;
+        --borderPrimary: #e5e7eb;
+        --borderSecondary: #d1d5db;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bgPrimary: black;
+          --bgSecondary: grey;
+          --bgTertiary: black;
+          --bgExtra: #888;
+          --fontPrimary: white;
+          --fontSecondary: white;
+          --fontTertiary: #1f2937;
+          --borderPrimary: #0e0e0e;
+          --borderSecondary: #222;
+        }
+      }
       body {
         margin: 0;
         padding: 0;
@@ -12,19 +36,19 @@
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        background-color: #f3f9fc;
+        background-color: var(--bgPrimary);
         font-family: "Noto Sans Devanagari", sans-serif;
       }
 
       .container {
-        background-color: white;
+        background-color: var(--bgSecondary);
         border-radius: 1rem;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         text-align: center;
         width: 80%;
         max-width: 720px;
         padding-top: 4rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--borderPrimary);
       }
       .wrapper {
         padding: 1rem;
@@ -32,25 +56,25 @@
       .day {
         font-size: 3rem;
         font-weight: bold;
-        color: #374151;
+        color: var(--fontPrimary);
         margin-bottom: 1rem;
         text-align: center;
       }
       .date {
         font-size: 5rem;
         font-weight: bold;
-        color: #1f2937;
+        color: var(--fontTertiary);
         margin-bottom: 1rem;
         text-align: center;
       }
 
       .time {
         font-size: 2rem;
-        color: #4b5563;
+        color: var(--fontSecondary);
       }
 
       .copyMessage {
-        color: #4b5563;
+        color: var(--fontSecondary);
         font-size: 0.8rem;
         margin-bottom: 1rem;
         margin-top: 0.2rem;
@@ -58,9 +82,9 @@
       .copy {
         margin-top: 1rem;
         cursor: pointer;
-        background-color: #f9f9f9;
-        border: 1px solid #d1d5db;
-        color: #4b5563;
+        background-color: var(--bgExtra);
+        border: 1px solid var(--borderSecondary);
+        color: var(--fontSecondary);
         border-radius: 0.5rem;
         padding: 0.5rem 1rem;
         font-size: 1.2rem;
@@ -70,18 +94,18 @@
       .footer {
         margin-top: 2rem;
         padding: 1rem;
-        background-color: #f3f4f6;
+        background-color: var(--bgTertiary);
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         font-size: 1rem;
-        color: #4b5563;
+        color: var(--fontSecondary);
         gap: 1rem;
       }
       .footer a {
         text-decoration: none;
-        color: #4b5563;
+        color: var(--fontSecondary);
         font-weight: bold;
       }
     </style>

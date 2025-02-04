@@ -571,10 +571,18 @@
       });
 
       // Update English date
+      const englishMonths = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+
+      // Convert 24-hour format to 12-hour format with AM/PM
+      const hour12 = nepalHour % 12 || 12;
+      const ampm = nepalHour >= 12 ? 'PM' : 'AM';
+
       document.getElementById("englishDate").textContent =
-        `${nepalYear}-${nepalMonth.toString().padStart(2, "0")}-${nepalDay
-          .toString()
-          .padStart(2, "0")} ` + `${nepalHour}:${nepalMinute}:${nepalSecond}`;
+        `${nepalDay} ${englishMonths[nepalMonth - 1]} ${nepalYear} ${hour12}:${nepalMinute}${ampm}`;
+
 
       // Update copy field
       document.getElementById("rawDateTime").value = `${bsYear}-${bsMonth
